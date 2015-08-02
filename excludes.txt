@@ -1,0 +1,31 @@
+/Application Data
+/Cookies
+/Local Settings
+/My Documents
+/NetHood
+/PrintHood
+/Recent
+/SendTo
+/Start Menu
+/Templates
+/Documents/My Music
+/Documents/My Pictures
+/Documents/My Videos
+/AppData/Local/Application Data
+/AppData/Local/History
+/AppData/Local/Temporary Internet Files
+/NTUSER.DAT
+/ntuser.dat*
+/Videos/Kein Backup/**
+/AppData/Local/Temp/**
+/AppData/Local/Microsoft/Windows/UsrClass.dat
+/AppData/Local/Microsoft/Windows/UsrClass.dat*
+/AppData/Local/Microsoft/Windows/WebCache
+/AppData/Local/Microsoft/Windows/Temporary Internet Files
+/AppData/LocalLow
+/AppData/Local/Mozilla/Firefox/Profiles/*/Cache
+/AppData/Local/Mozilla/Firefox/Profiles/*/jumpListCache
+/AppData/Local/IconCache.db
+/AppData/Roaming/Mozilla/Firefox/Profiles/*/parent.lock
+/AppData/Local/ElevatedDiagnostics
+/AppData/Local/Microsoft/Windows/WebCacheLock.dat
