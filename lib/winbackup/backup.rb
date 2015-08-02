@@ -22,7 +22,14 @@ class Backup
       error = Exception.new('No such directory: ' + src)
       raise error
     end
-    @src = src
+    # Figure out a decent encoding for filenames...
+    encoding = nil
+    Dir.foreach(src) { |file|
+      encoding = file.encoding
+      break
+    }
+    $stderr.puts "Using #{encoding} for filenames."
+    @src = src.encode(encoding)
   end
 
   def destination(dst)
@@ -31,7 +38,14 @@ class Backup
       error = Exception.new('No such directory: ' + dst)
       raise error
     end
-    @dst = dst
+    # Figure out a decent encoding for filenames...
+    encoding = nil
+    Dir.foreach(dst) { |file|
+      encoding = file.encoding
+      break
+    }
+    $stderr.puts "Using #{encoding} for filenames."
+    @dst = dst.encode(encoding)
     @my_time = @time.strftime('%Y-%m-%d--%H-%M-%S')
     @destination_path = @dst + '/' + @my_time
     Dir.foreach(@dst) { |file|
@@ -47,10 +61,13 @@ class Backup
     paths = Array.new
     paths << '' # will be expanded to @src
     while path = paths.shift
-      type = File.ftype(@src + '/' + path)
+      src = @src.encode(path.encoding)
+      dst = @src.encode(path.encoding)
+      p path.encoding, path, src.encoding, src
+      type = File.ftype(src + '/' + path)
       case type
         when 'file'
-          f = BFile.new(@src, @dst, @my_time, path, @excludes, @old_backups)
+          f = BFile.new(src, dst, @my_time, path, @excludes, @old_backups)
           if f.backup?
             case f.backup_type
               when :copy
@@ -62,7 +79,7 @@ class Backup
             end
           end
         when 'directory'
-          d = BDir.new(@src, @destination_path, path, @excludes)
+          d = BDir.new(src, @destination_path, path, @excludes)
           if d.backup? # Necessary for ignores
             @dirs << d
           end
