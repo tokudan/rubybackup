@@ -14,7 +14,7 @@ class BDir
   def backup?
 	r = true
 	r = false if @excluded
-	r = false if Dir.exists?(@dest + '/' + @dir)
+	r = false if Dir.exist?(@dest + '/' + @dir)
 	r
   end
 

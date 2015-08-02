@@ -18,7 +18,7 @@ class Backup
 
   def source(src)
     src = File.absolute_path(src)
-    if not Dir.exists?(src)
+    if not Dir.exist?(src)
       error = Exception.new('No such directory: ' + src)
       raise error
     end
@@ -34,7 +34,7 @@ class Backup
 
   def destination(dst)
     dst = File.absolute_path(dst)
-    if not Dir.exists?(dst)
+    if not Dir.exist?(dst)
       error = Exception.new('No such directory: ' + dst)
       raise error
     end
@@ -49,7 +49,7 @@ class Backup
     @my_time = @time.strftime('%Y-%m-%d--%H-%M-%S')
     @destination_path = @dst + '/' + @my_time
     Dir.foreach(@dst) { |file|
-      if Dir.exists?(@dst + '/' + file)
+      if Dir.exist?(@dst + '/' + file)
         @old_backups << file unless file == '.' or file == '..'
       end
     }
@@ -61,13 +61,10 @@ class Backup
     paths = Array.new
     paths << '' # will be expanded to @src
     while path = paths.shift
-      src = @src.encode(path.encoding)
-      dst = @src.encode(path.encoding)
-      p path.encoding, path, src.encoding, src
-      type = File.ftype(src + '/' + path)
+      type = File.ftype(@src + '/' + path)
       case type
         when 'file'
-          f = BFile.new(src, dst, @my_time, path, @excludes, @old_backups)
+          f = BFile.new(@src, @dst, @my_time, path, @excludes, @old_backups)
           if f.backup?
             case f.backup_type
               when :copy
@@ -79,7 +76,7 @@ class Backup
             end
           end
         when 'directory'
-          d = BDir.new(src, @destination_path, path, @excludes)
+          d = BDir.new(@src, @destination_path, path, @excludes)
           if d.backup? # Necessary for ignores
             @dirs << d
           end
